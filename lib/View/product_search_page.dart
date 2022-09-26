@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:online_shop_app/Resources/colors.dart';
+import 'package:online_shop_app/View/product_details.dart';
+
+import 'item_card.dart';
 
 class ProductSearchPage extends StatefulWidget {
   const ProductSearchPage({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           children: [
             TextField(
@@ -34,6 +37,25 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   borderSide: BorderSide.none,
                 ),
               ),
+            ),
+            const SizedBox(height: 30,),
+            Expanded(
+              child: GridView.builder(
+                  itemCount: 10,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 40,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 0.75,
+                  ),
+                  itemBuilder: (context, index) => ItemCard(
+                    //product: products[index],
+                    press: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetails(),
+                        )),
+                  )),
             ),
           ],
         ),
