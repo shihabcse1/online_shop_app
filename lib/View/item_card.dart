@@ -3,24 +3,22 @@ import 'package:online_shop_app/Resources/colors.dart';
 
 class ItemCard extends StatelessWidget {
   //final Product product;
-  final Function press;
-  const ItemCard({Key? key, required this.press}) : super(key: key);
+  final VoidCallback onPress;
+  const ItemCard({Key? key, required this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.bottomCenter,
+            children: [
+              GestureDetector(
+                onTap: onPress,
+                child: Container(
                   padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
                     color: AppColors.whiteColor,
@@ -85,37 +83,37 @@ class ItemCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
-                  bottom: -20,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.buttonColorUp,
-                            AppColors.buttonColorDown,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: const Text(
-                      "+",
-                      style: TextStyle(
-                          color: AppColors.whiteColor,
-                        fontSize: 25,
+              ),
+              Positioned(
+                bottom: -20,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          AppColors.buttonColorUp,
+                          AppColors.buttonColorDown,
+                        ],
                       ),
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: const Text(
+                    "+",
+                    style: TextStyle(
+                        color: AppColors.whiteColor,
+                      fontSize: 25,
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

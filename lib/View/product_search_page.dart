@@ -50,7 +50,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   ),
                   itemBuilder: (context, index) => ItemCard(
                     //product: products[index],
-                    press: () => Navigator.push(
+                    onPress: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ProductDetails(),
