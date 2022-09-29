@@ -11,7 +11,6 @@ class ProductViewViewModel with ChangeNotifier {
 
   setProductList(ApiResponse<ProductListModel> response){
     productList = response;
-    //print("Testing response${response.data?.data.products.count}");
     notifyListeners();
   }
 
@@ -26,6 +25,5 @@ class ProductViewViewModel with ChangeNotifier {
       setProductList(ApiResponse.error(error.toString()));
     });
   }
-
 
 }

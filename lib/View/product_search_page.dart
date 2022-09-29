@@ -3,7 +3,6 @@ import 'package:online_shop_app/Resources/colors.dart';
 import 'package:online_shop_app/View/product_details.dart';
 import 'package:online_shop_app/ViewModel/product_search_view_model.dart';
 import 'package:provider/provider.dart';
-
 import '../Data/response/status.dart';
 import 'item_card.dart';
 
@@ -36,7 +35,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
         create: (BuildContext context) => productViewViewModel,
         child: Consumer<ProductViewViewModel>(
           builder: (context, value, _){
-            print("Total items : "+value.productList.data.toString());
             switch(value.productList.status){
               case Status.LOADING:
                 return const Center(child: CircularProgressIndicator(),);
@@ -72,7 +70,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                               childAspectRatio: 0.75,
                             ),
                             itemBuilder: (context, index) => ItemCard(
-                              product: value.productList.data!.data!.products!.results![index],
+                              product: value.productList.data!.data.products.results[index],
+                              index: index,
                               onPress: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(

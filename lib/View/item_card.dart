@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:online_shop_app/Model/ProductListModel.dart';
 import 'package:online_shop_app/Resources/colors.dart';
+import 'package:online_shop_app/ViewModel/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class ItemCard extends StatelessWidget {
   final Results product;
+  final int index;
   final VoidCallback onPress;
-  const ItemCard({Key? key, required this.product, required this.onPress}) : super(key: key);
+  const ItemCard({Key? key, required this.product, required this.index, required this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class ItemCard extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 148,
                         width: 148,
                         child:  Image.network(
@@ -75,6 +78,7 @@ class ItemCard extends StatelessWidget {
                           const Text("৳ 20",
                             style: TextStyle(
                               color: AppColors.priceTextColor,
+                                fontSize: 12,
                                 decoration: TextDecoration.lineThrough
                             ),
                           ),
@@ -120,28 +124,98 @@ class ItemCard extends StatelessWidget {
               ),
               Positioned(
                 bottom: -20,
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.buttonColorUp,
-                          AppColors.buttonColorDown,
-                        ],
+                child: Consumer<CartProvider>(
+                  builder: (context, value, child){
+                    return GestureDetector(
+                      onTap: (){
+                        value.addValue(index);
+                      },
+                      child: (!value.selectedValue.contains(index)) ? Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                AppColors.buttonColorUp,
+                                AppColors.buttonColorDown,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: const Text(
+                          "+",
+                          style: TextStyle(
+                            color: AppColors.whiteColor,
+                            fontSize: 25,
+                          ),
+                        ),
+                      ) : Container(
+                        alignment: Alignment.center,
+                        height: 36,
+                        width: 140,
+                        decoration: BoxDecoration(
+                            color: AppColors.pinkSoftColor,
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.all(4.0),
+                              alignment: Alignment.center,
+                              height: 28,
+                              width: 28,
+                              decoration: BoxDecoration(
+                                  color: AppColors.pinkMinusButtonColor,
+                                  borderRadius: BorderRadius.circular(14)
+                              ),
+                              child: const Text(
+                                "-",
+                                style: TextStyle(
+                                  color: AppColors.whiteColor,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            ),
+                            const Text(
+                              "1 পিস",
+                              style: TextStyle(
+                                color: AppColors.priceTextColor,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.all(4.0),
+                              alignment: Alignment.center,
+                              height: 28,
+                              width: 28,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      AppColors.buttonColorUp,
+                                      AppColors.buttonColorDown,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(14)
+                              ),
+                              child: const Text(
+                                "+",
+                                style: TextStyle(
+                                  color: AppColors.whiteColor,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(20)
-                  ),
-                  child: const Text(
-                    "+",
-                    style: TextStyle(
-                        color: AppColors.whiteColor,
-                      fontSize: 25,
-                    ),
-                  ),
+                    );
+                  },
                 ),
               )
             ],
