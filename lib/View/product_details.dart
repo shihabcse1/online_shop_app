@@ -2,20 +2,34 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:online_shop_app/Data/response/status.dart';
+import 'package:online_shop_app/ViewModel/product_details_view_model.dart';
+import 'package:provider/provider.dart';
 import '../Resources/colors.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({Key? key}) : super(key: key);
+
+  final String productSlug;
+  const ProductDetails({Key? key, required this.productSlug}) : super(key: key);
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+
+  ProductDetailsViewViewModel productDetailsViewViewModel = ProductDetailsViewViewModel();
+
+  @override
+  void initState() {
+    productDetailsViewViewModel.fetchProductDetailsApi(widget.productSlug);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final deviceHeight = MediaQuery.of(context).size.height;
+    //final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -25,136 +39,159 @@ class _ProductDetailsState extends State<ProductDetails> {
         elevation: 0,
         title: const Text("প্রোডাক্ট ডিটেইল"),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                  fillColor: AppColors.whiteColor,
-                  filled: true,
-                  contentPadding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-                  hintText: "কাঙ্ক্ষিত পণ্যটি খুঁজুন",
-                  suffixIcon: const Icon(Icons.search_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Container(
-                height: 308,
-                width: 248,
-                decoration: BoxDecoration(
-                  color: AppColors.whiteColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Image.asset("images/dummy_photo_details.png"),
-              ),
-            ),
-            const Text("প্রিঞ্জেলস অনিওন চিপস ৪২ গ্রাম",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Row(
-              children: const [
-                Text("ব্রান্ডঃ প্রিঞ্জেলস"),
-                Text("ডিস্ট্রিবিউটরঃ মোঃ মোবারাক হোসেন"),
-              ],
-            ),
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.bottomCenter,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                  child: Container(
-                    height: 110,
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
+      body: ChangeNotifierProvider<ProductDetailsViewViewModel>(
+          create: (BuildContext context) => productDetailsViewViewModel,
+        child: Consumer<ProductDetailsViewViewModel>(
+          builder: (context, value, _){
+            switch(value.productDetails.status){
+              case Status.LOADING:
+                return const Center(child: CircularProgressIndicator(),);
+              case Status.ERROR:
+                return Center(child: Text(value.productDetails.message.toString()));
+              case Status.COMPLETED:
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("ক্রয়মূল্যঃ",
-                                style: TextStyle(
-                                  color: AppColors.priceTextColor,
-                                  fontWeight: FontWeight.bold
-                                )
+                        TextField(
+                          decoration: InputDecoration(
+                            fillColor: AppColors.whiteColor,
+                            filled: true,
+                            contentPadding:
+                            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+                            hintText: "কাঙ্ক্ষিত পণ্যটি খুঁজুন",
+                            suffixIcon: const Icon(Icons.search_outlined),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                              borderSide: BorderSide.none,
                             ),
-                            Text("৳ 220",
-                                style: TextStyle(
-                                    color: AppColors.priceTextColor,
-                                    fontWeight: FontWeight.bold
-                                )
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Container(
+                            height: 308,
+                            width: 248,
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteColor,
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          ],
+                            child: Image.network(value.productDetails.data!.data.image.toString()),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text("বিক্রয়মূল্যঃ"),
-                            Text("৳ 220"),
-                          ],
-                        ),
-                        const DottedLine(
-                          direction: Axis.horizontal,
-                          lineLength: double.infinity,
-                          lineThickness: 1.0,
-                          dashLength: 4.0,
-                          dashColor: AppColors.blackColor400,
-                          dashRadius: 0.0,
-                          dashGapLength: 4.0,
-                          dashGapColor: Colors.transparent,
-                          dashGapRadius: 0.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("প্রিঞ্জেলস অনিওন চিপস ৪২ গ্রাম",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text("ব্রান্ডঃ প্রিঞ্জেলস"),
+                                Text("ডিস্ট্রিবিউটরঃ মোঃ মোবারাক হোসেন"),
+                              ],
+                            ),
+                            Stack(
+                              clipBehavior: Clip.none,
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Container(
+                                    height: 110,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.whiteColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: const [
+                                            Text("ক্রয়মূল্যঃ",
+                                                style: TextStyle(
+                                                    color: AppColors.priceTextColor,
+                                                    fontWeight: FontWeight.bold
+                                                )
+                                            ),
+                                            Text("৳ 220",
+                                                style: TextStyle(
+                                                    color: AppColors.priceTextColor,
+                                                    fontWeight: FontWeight.bold
+                                                )
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: const [
+                                            Text("বিক্রয়মূল্যঃ"),
+                                            Text("৳ 220"),
+                                          ],
+                                        ),
+                                        const DottedLine(
+                                          direction: Axis.horizontal,
+                                          lineLength: double.infinity,
+                                          lineThickness: 1.0,
+                                          dashLength: 4.0,
+                                          dashColor: AppColors.blackColor400,
+                                          dashRadius: 0.0,
+                                          dashGapLength: 4.0,
+                                          dashGapColor: Colors.transparent,
+                                          dashGapRadius: 0.0,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: const [
 
-                            Text("লাভঃ"),
-                            Text("৳ 30"),
+                                            Text("লাভঃ"),
+                                            Text("৳ 30"),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: -70,
+                                  child: ClipPath(
+                                    clipper: _Hexagon(),
+                                    child: Container(
+                                      height: 100,  //<- change height width
+                                      width: 100,
+                                      decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            AppColors.buttonColorUp,
+                                            AppColors.buttonColorDown,
+                                          ],
+                                        ),
+                                        //borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const Text("এটিকিনুন"),
+                              ],
+                            ),
+                            const Text("বিস্তারিত"),
+                            const Text("জীবের মধ্যে সবচেয়ে সম্পূর্ণতা মানুষের। কিন্তু সবচেয়ে অসম্পূর্ণ হয়ে সে জন্মগ্রহণ"),
                           ],
-                        ),
+                        )
                       ],
                     ),
                   ),
-                ),
-                Positioned(
-                  bottom: -70,
-                  child: ClipPath(
-                    clipper: _Hexagon(),
-                    child: Container(
-                      height: 100,  //<- change height width
-                      width: 100,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.buttonColorUp,
-                            AppColors.buttonColorDown,
-                          ],
-                        ),
-                        //borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ),
-                const Text("এটিকিনুন"),
-              ],
-            ),
-            const Text("বিস্তারিত"),
-            const Text("জীবের মধ্যে সবচেয়ে সম্পূর্ণতা মানুষের। কিন্তু সবচেয়ে অসম্পূর্ণ হয়ে সে জন্মগ্রহণ"),
-          ],
+                );
+
+            }
+            return Column();
+          },
         ),
       ),
     );

@@ -75,7 +75,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                               onPress: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const ProductDetails(),
+                                    builder: (context) => ProductDetails(productSlug: value.productList.data!.data.products.results[index].slug),
                                   )),
                             )),
                       ),
