@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:online_shop_app/Model/ProductListModel.dart';
 import 'package:online_shop_app/Resources/colors.dart';
 
 class ItemCard extends StatelessWidget {
-  //final Product product;
+  final Results product;
   final VoidCallback onPress;
-  const ItemCard({Key? key, required this.onPress}) : super(key: key);
+  const ItemCard({Key? key, required this.product, required this.onPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +30,44 @@ class ItemCard extends StatelessWidget {
                       Container(
                         height: 148,
                         width: 148,
-                        child: Image.asset("images/dummy_product.png"),
+                        child:  Image.network(
+                          product.image,
+                          fit: BoxFit.fill,
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      const Text("Lays Classic Family Chips"),
+                      const Text("Lays Classic Family Chips",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           RichText(
                             text: TextSpan(
                               text: 'ক্রয় ',
-                              style: DefaultTextStyle.of(context).style,
-                              children: const <TextSpan>[
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.blackColor400
+                              ),
+                              children: <TextSpan>[
                                 TextSpan(
-                                    text: '৳ 20.00',
-                                    style: TextStyle(
+                                    text: '৳ ${product.charge.currentCharge}',
+                                    style: const TextStyle(
                                       color: AppColors.priceTextColor,
-                                        fontWeight: FontWeight.bold)
+                                        fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    )
                                 ),
                               ],
                             ),
@@ -63,18 +86,29 @@ class ItemCard extends StatelessWidget {
                           RichText(
                             text: TextSpan(
                               text: 'বিক্রয় ',
-                              style: DefaultTextStyle.of(context).style,
-                              children: const <TextSpan>[
-                                TextSpan(text: '৳ 25.00', style: TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                  fontSize: 10,
+                                  color: AppColors.blackColor400,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(text: '৳ ${product.charge.sellingPrice.toString()}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
                               ],
                             ),
                           ),
                           RichText(
                             text: TextSpan(
                               text: 'লাভ ',
-                              style: DefaultTextStyle.of(context).style,
-                              children: const <TextSpan>[
-                                TextSpan(text: '৳ 5.00', style: TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: AppColors.blackColor400,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(text: '৳ ${product.charge.profit.toString()}',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
                               ],
                             ),
                           ),

@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:online_shop_app/Repository/product_search_repository.dart';
-
 import '../Data/response/api_response.dart';
 import '../Model/ProductListModel.dart';
 
-class HomeViewViewModel with ChangeNotifier {
+class ProductViewViewModel with ChangeNotifier {
 
   final _myRepo = ProductSearchRepository();
 
   ApiResponse<ProductListModel> productList = ApiResponse.loading();
 
-  setMoviesList(ApiResponse<ProductListModel> response){
+  setProductList(ApiResponse<ProductListModel> response){
     productList = response;
+    //print("Testing response${response.data?.data.products.count}");
     notifyListeners();
   }
 
-  Future<void> fetchMoviesListApi ()async{
+  Future<void> fetchProductListApi ()async{
 
-    setMoviesList(ApiResponse.loading());
+    setProductList(ApiResponse.loading());
+    _myRepo.fetchProductList().then((value){
 
-    _myRepo.fetchMoviesList().then((value){
-      setMoviesList(ApiResponse.completed(value));
+      setProductList(ApiResponse.completed(value));
 
     }).onError((error, stackTrace){
-      setMoviesList(ApiResponse.error(error.toString()));
+      setProductList(ApiResponse.error(error.toString()));
     });
   }
 
