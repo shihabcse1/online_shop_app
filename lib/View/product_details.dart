@@ -43,7 +43,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           create: (BuildContext context) => productDetailsViewViewModel,
         child: Consumer<ProductDetailsViewViewModel>(
           builder: (context, value, _){
-            switch(value.productDetails.status){
+            switch(value.productDetails.status!){
               case Status.LOADING:
                 return const Center(child: CircularProgressIndicator(),);
               case Status.ERROR:
@@ -91,8 +91,55 @@ class _ProductDetailsState extends State<ProductDetails> {
                             ),
                             Row(
                               children: [
-                                Text("ব্রান্ডঃ প্রিঞ্জেলস"),
-                                Text("ডিস্ট্রিবিউটরঃ মোঃ মোবারাক হোসেন"),
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'ব্রান্ডঃ ',
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.blackColor400
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'প্রিঞ্জেলস',
+                                          style: TextStyle(
+                                            color: AppColors.blackColor400,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Container(
+                                    height: 5,
+                                    width: 5,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.priceTextColor,
+                                    ),
+                                  ),
+                                ),
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'ডিস্ট্রিবিউটরঃ ',
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: AppColors.blackColor400
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'মোঃ মোবারাক হোসেন',
+                                          style: TextStyle(
+                                            color: AppColors.blackColor400,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12,
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                             Stack(
@@ -102,36 +149,42 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                                   child: Container(
-                                    height: 110,
+                                    height: 90,
                                     decoration: BoxDecoration(
                                       color: AppColors.whiteColor,
                                       borderRadius: BorderRadius.circular(15),
                                     ),
                                     child: Column(
                                       children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: const [
-                                            Text("ক্রয়মূল্যঃ",
-                                                style: TextStyle(
-                                                    color: AppColors.priceTextColor,
-                                                    fontWeight: FontWeight.bold
-                                                )
-                                            ),
-                                            Text("৳ 220",
-                                                style: TextStyle(
-                                                    color: AppColors.priceTextColor,
-                                                    fontWeight: FontWeight.bold
-                                                )
-                                            ),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10, bottom: 4, left: 10, right: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text("ক্রয়মূল্যঃ",
+                                                  style: TextStyle(
+                                                      color: AppColors.priceTextColor,
+                                                      fontWeight: FontWeight.bold
+                                                  )
+                                              ),
+                                              Text("৳${value.productDetails.data!.data.charge.currentCharge}",
+                                                  style: const TextStyle(
+                                                      color: AppColors.priceTextColor,
+                                                      fontWeight: FontWeight.bold
+                                                  )
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: const [
-                                            Text("বিক্রয়মূল্যঃ"),
-                                            Text("৳ 220"),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text("বিক্রয়মূল্যঃ", style: TextStyle(fontWeight: FontWeight.w500),),
+                                              Text("৳${value.productDetails.data!.data.charge.sellingPrice}", style: const TextStyle(fontWeight: FontWeight.w500),),
+                                            ],
+                                          ),
                                         ),
                                         const DottedLine(
                                           direction: Axis.horizontal,
@@ -144,13 +197,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           dashGapColor: Colors.transparent,
                                           dashGapRadius: 0.0,
                                         ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: const [
-
-                                            Text("লাভঃ"),
-                                            Text("৳ 30"),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text("লাভঃ", style: TextStyle(fontWeight: FontWeight.w500),),
+                                              Text("৳${value.productDetails.data!.data.charge.profit}", style: const TextStyle(fontWeight: FontWeight.w500),),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -161,6 +216,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   child: ClipPath(
                                     clipper: _Hexagon(),
                                     child: Container(
+                                      alignment: Alignment.center,
                                       height: 100,  //<- change height width
                                       width: 100,
                                       decoration: const BoxDecoration(
@@ -171,26 +227,39 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             AppColors.buttonColorUp,
                                             AppColors.buttonColorDown,
                                           ],
-                                        ),
-                                        //borderRadius: BorderRadius.circular(20),
+                                        ), //borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: const [
+                                          Text("এটি", style: TextStyle(color: AppColors.whiteColor),),
+                                          Text(" কিনুন", style: TextStyle(color: AppColors.whiteColor),)
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                const Text("এটিকিনুন"),
+
                               ],
                             ),
-                            const Text("বিস্তারিত"),
-                            const Text("জীবের মধ্যে সবচেয়ে সম্পূর্ণতা মানুষের। কিন্তু সবচেয়ে অসম্পূর্ণ হয়ে সে জন্মগ্রহণ"),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text("বিস্তারিত", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),),
+                                  Text("জীবের মধ্যে সবচেয়ে সম্পূর্ণতা মানুষের। কিন্তু সবচেয়ে অসম্পূর্ণ হয়ে সে জন্মগ্রহণ", style: TextStyle(color: AppColors.blackColor400),),
+                                ],
+                              ),
+                            )
                           ],
                         )
                       ],
                     ),
                   ),
                 );
-
             }
-            return Column();
           },
         ),
       ),
