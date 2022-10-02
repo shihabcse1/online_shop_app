@@ -1,8 +1,11 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:online_shop_app/Resources/colors.dart';
 import 'package:online_shop_app/View/product_details.dart';
 import 'package:online_shop_app/ViewModel/product_search_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../Data/response/status.dart';
 import 'item_card.dart';
 
@@ -16,15 +19,19 @@ class ProductSearchPage extends StatefulWidget {
 class _ProductSearchPageState extends State<ProductSearchPage> {
 
   ProductViewViewModel  productViewViewModel = ProductViewViewModel();
+  //int currentPageOffset = 0;
+  final RefreshController refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
-    productViewViewModel.fetchProductListApi();
+    productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
+    print("I'm main"+productViewViewModel.toString());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final productListProvider  = Provider.of<ProductViewViewModel>(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -60,24 +67,44 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                         ),
                       ),
                       Expanded(
-                        child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(vertical: 30),
-                            itemCount: value.productList.data?.data.products.results.length,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 40,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: 0.75,
-                            ),
-                            itemBuilder: (context, index) => ItemCard(
-                              product: value.productList.data!.data.products.results[index],
-                              index: index,
-                              onPress: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductDetails(productSlug: value.productList.data!.data.products.results[index].slug),
-                                  )),
-                            )),
+                        child: SmartRefresher(
+                          controller: refreshController,
+                          enablePullUp: true,
+
+                          onRefresh: () async {
+                            //productListProvider.increasePageOffset();
+                            //await productViewViewModel.fetchProductListApi(productListProvider.currentPageOffset);
+                            // if (result) {
+                            //refreshController.refreshCompleted();
+                            // } else {
+                            //   refreshController.refreshFailed();
+                            // }
+                          },
+                          onLoading: () async {
+                            productListProvider.increasePageOffset();
+                            await productViewViewModel.fetchProductListApi(productListProvider.currentPageOffset);
+                            refreshController.loadComplete();
+                            print("current Page "+productListProvider.currentPageOffset.toString());
+                          },
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(vertical: 30),
+                              itemCount: value.productList.data?.data.products.results.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 40,
+                                crossAxisSpacing: 12,
+                                childAspectRatio: 0.75,
+                              ),
+                              itemBuilder: (context, index) => ItemCard(
+                                product: value.productList.data!.data.products.results[index],
+                                index: index,
+                                onPress: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetails(productSlug: value.productList.data!.data.products.results[index].slug),
+                                    )),
+                              )),
+                        ),
                       ),
                     ],
                   ),
