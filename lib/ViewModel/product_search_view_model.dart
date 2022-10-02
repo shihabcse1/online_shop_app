@@ -21,8 +21,10 @@ class ProductViewViewModel with ChangeNotifier {
 
   setProductList(ApiResponse<ProductListModel> response){
     productList = response;
-    //productListItems.addAll(response);
-    debugPrint("My response "+response.toString());
+    // productListItems.addAll(response);
+    // debugPrint("My response is "+response.toString());
+    // My response Status is : Status.LOADING
+    // My response Status is : Status.COMPLETED
     notifyListeners();
   }
 
@@ -31,6 +33,10 @@ class ProductViewViewModel with ChangeNotifier {
     setProductList(ApiResponse.loading());
     _myRepo.fetchProductList(_currentPageOffset).then((value){
       setProductList(ApiResponse.completed(value));
+      //print("This is value : "+value.toString());
+      //This is value : Instance of 'ProductListModel'
+      //print("It's my repo "+_myRepo.toString());
+      //It's my repo Instance of 'ProductSearchRepository'
       //print("Hello "+ApiResponse.completed(value).toString());
       //Hello Status : Status.COMPLETED
     }).onError((error, stackTrace){

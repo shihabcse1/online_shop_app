@@ -1,5 +1,6 @@
 import 'dart:core';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:online_shop_app/Resources/colors.dart';
 import 'package:online_shop_app/View/product_details.dart';
@@ -7,6 +8,7 @@ import 'package:online_shop_app/ViewModel/product_search_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../Data/response/status.dart';
+import '../ViewModel/cart_provider.dart';
 import 'item_card.dart';
 
 class ProductSearchPage extends StatefulWidget {
@@ -37,6 +39,21 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
         elevation: 0,
+        actions: [
+          Center(
+            child: Badge(
+              badgeContent: Consumer<CartProvider>(
+                builder: (context, value , child){
+                  return Text(value.getTotalNumberOfProductFromCart().toString(),style: const TextStyle(color: Colors.white));
+                },
+              ),
+              animationDuration: const Duration(milliseconds: 300),
+              animationType: BadgeAnimationType.slide,
+              child: const Icon(Icons.shopping_bag_outlined, color: Colors.black45,),
+            ),
+          ),
+          const SizedBox(width: 30.0)
+        ],
       ),
       body: ChangeNotifierProvider<ProductViewViewModel>(
         create: (BuildContext context) => productViewViewModel,

@@ -128,7 +128,8 @@ class ItemCard extends StatelessWidget {
                   builder: (context, value, child){
                     return GestureDetector(
                       onTap: (){
-                        value.addValue(index);
+                        value.addPlusIconClickValue(index);
+                        value.addProductToCart();
                       },
                       child: (!value.selectedValue.contains(index)) ? Container(
                         alignment: Alignment.center,
@@ -163,20 +164,25 @@ class ItemCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              margin: const EdgeInsets.all(4.0),
-                              alignment: Alignment.center,
-                              height: 28,
-                              width: 28,
-                              decoration: BoxDecoration(
-                                  color: AppColors.pinkMinusButtonColor,
-                                  borderRadius: BorderRadius.circular(14)
-                              ),
-                              child: const Text(
-                                "-",
-                                style: TextStyle(
-                                  color: AppColors.whiteColor,
-                                  fontSize: 25,
+                            GestureDetector(
+                              onTap: (){
+                                value.removeProductFromCart();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(4.0),
+                                alignment: Alignment.center,
+                                height: 28,
+                                width: 28,
+                                decoration: BoxDecoration(
+                                    color: AppColors.pinkMinusButtonColor,
+                                    borderRadius: BorderRadius.circular(14)
+                                ),
+                                child: const Text(
+                                  "-",
+                                  style: TextStyle(
+                                    color: AppColors.whiteColor,
+                                    fontSize: 25,
+                                  ),
                                 ),
                               ),
                             ),
@@ -187,27 +193,32 @@ class ItemCard extends StatelessWidget {
                                 fontSize: 14,
                               ),
                             ),
-                            Container(
-                              margin: const EdgeInsets.all(4.0),
-                              alignment: Alignment.center,
-                              height: 28,
-                              width: 28,
-                              decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      AppColors.buttonColorUp,
-                                      AppColors.buttonColorDown,
-                                    ],
+                            GestureDetector(
+                              onTap: (){
+                                value.addProductToCart();
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(4.0),
+                                alignment: Alignment.center,
+                                height: 28,
+                                width: 28,
+                                decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        AppColors.buttonColorUp,
+                                        AppColors.buttonColorDown,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(14)
+                                ),
+                                child: const Text(
+                                  "+",
+                                  style: TextStyle(
+                                    color: AppColors.whiteColor,
+                                    fontSize: 25,
                                   ),
-                                  borderRadius: BorderRadius.circular(14)
-                              ),
-                              child: const Text(
-                                "+",
-                                style: TextStyle(
-                                  color: AppColors.whiteColor,
-                                  fontSize: 25,
                                 ),
                               ),
                             )
