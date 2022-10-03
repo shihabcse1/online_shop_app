@@ -11,10 +11,7 @@ class ProductSearchRepository {
     List<ProductListModel> products = [];
     try{
       dynamic response = await _apiServices.getGetApiResponse('https://panel.supplyline.network/api/product/search-suggestions/?limit=10&offset=$currentPageOffset');
-      // print("it's response :"+ProductListModel.fromJson(response).toString());
-      // it's response :Instance of 'ProductListModel'
       response = ProductListModel.fromJson(response);
-      //products.addAll(response);
       return response;
     }catch(e){
       throw e;

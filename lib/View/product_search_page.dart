@@ -27,7 +27,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
   @override
   void initState() {
     productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
-    print("I'm main"+productViewViewModel.toString());
+    //print("I'm main"+productViewViewModel.toString());
     super.initState();
   }
 
@@ -101,11 +101,12 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             productListProvider.increasePageOffset();
                             await productViewViewModel.fetchProductListApi(productListProvider.currentPageOffset);
                             refreshController.loadComplete();
-                            print("current Page "+productListProvider.currentPageOffset.toString());
+                            //print("current Page "+productListProvider.currentPageOffset.toString());
                           },
                           child: GridView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 30),
-                              itemCount: value.productList.data?.data.products.results.length,
+                              itemCount: productViewViewModel.productListItems.length,
+                              //value.productList.data?.data.products.results.length,
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 40,
@@ -113,12 +114,15 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                                 childAspectRatio: 0.75,
                               ),
                               itemBuilder: (context, index) => ItemCard(
-                                product: value.productList.data!.data.products.results[index],
+                                product: productViewViewModel.productListItems[index],
+                                //value.productList.data!.data.products.results[index],
+
                                 index: index,
                                 onPress: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ProductDetails(productSlug: value.productList.data!.data.products.results[index].slug),
+                                      //value.productList.data!.data.products.results[index].slug
+                                      builder: (context) => ProductDetails(productSlug: productViewViewModel.productListItems[index].slug),
                                     )),
                               )),
                         ),
