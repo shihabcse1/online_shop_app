@@ -31,6 +31,8 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    String? totalPage;
+    double totalPageOffset;
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -92,8 +94,12 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                             }
                           },
                           onLoading: () async {
-                            productViewViewModel.increasePageOffset();
-                            await productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
+                            totalPage = productViewViewModel.productList.data?.data.products.count.toString();
+                            totalPageOffset = double.parse(totalPage!)/ 10;
+                            if(totalPageOffset.toInt()! > productViewViewModel.currentPageOffset){
+                              productViewViewModel.increasePageOffset();
+                              await productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
+                            }
                             if (productViewViewModel.isProductFetchedSuccessful) {
                               refreshController.loadComplete();
                             } else {
