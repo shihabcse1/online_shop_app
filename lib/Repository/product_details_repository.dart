@@ -8,12 +8,9 @@ class ProductDetailsRepository {
   BaseApiServices _apiServices = NetworkApiService();
 
   Future<ProductDetailsModel> fetchProductDetails(String slug)async{
-
     try{
-
       dynamic response = await _apiServices.getGetApiResponse(AppUrl.productDetailsBaseUrl + slug);
       return response = ProductDetailsModel.fromJson(response);
-
     }catch(e){
       throw e;
     }

@@ -21,19 +21,16 @@ class ProductSearchPage extends StatefulWidget {
 class _ProductSearchPageState extends State<ProductSearchPage> {
 
   ProductViewViewModel  productViewViewModel = ProductViewViewModel();
-  //int currentPageOffset = 0;
-  final RefreshController refreshController = RefreshController(initialRefresh: false);
+  final RefreshController refreshController = RefreshController(initialRefresh: true);
 
   @override
   void initState() {
     productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
-    //print("I'm main"+productViewViewModel.toString());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final productListProvider  = Provider.of<ProductViewViewModel>(context);
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -59,7 +56,7 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
         create: (BuildContext context) => productViewViewModel,
         child: Consumer<ProductViewViewModel>(
           builder: (context, value, _){
-            switch(value.productList.status){
+            switch(value.productList.status!){
               case Status.LOADING:
                 return const Center(child: CircularProgressIndicator(),);
               case Status.ERROR:
@@ -87,26 +84,25 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                         child: SmartRefresher(
                           controller: refreshController,
                           enablePullUp: true,
-
                           onRefresh: () async {
-                            //productListProvider.increasePageOffset();
-                            //await productViewViewModel.fetchProductListApi(productListProvider.currentPageOffset);
-                            // if (result) {
-                            //refreshController.refreshCompleted();
-                            // } else {
-                            //   refreshController.refreshFailed();
-                            // }
+                            if (productViewViewModel.isProductFetchedSuccessful) {
+                            refreshController.refreshCompleted();
+                            } else {
+                              refreshController.refreshFailed();
+                            }
                           },
                           onLoading: () async {
-                            productListProvider.increasePageOffset();
-                            await productViewViewModel.fetchProductListApi(productListProvider.currentPageOffset);
-                            refreshController.loadComplete();
-                            //print("current Page "+productListProvider.currentPageOffset.toString());
+                            productViewViewModel.increasePageOffset();
+                            await productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
+                            if (productViewViewModel.isProductFetchedSuccessful) {
+                              refreshController.loadComplete();
+                            } else {
+                              refreshController.loadFailed();
+                            }
                           },
                           child: GridView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 30),
                               itemCount: productViewViewModel.productListItems.length,
-                              //value.productList.data?.data.products.results.length,
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 mainAxisSpacing: 40,
@@ -115,13 +111,10 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                               ),
                               itemBuilder: (context, index) => ItemCard(
                                 product: productViewViewModel.productListItems[index],
-                                //value.productList.data!.data.products.results[index],
-
                                 index: index,
                                 onPress: () => Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      //value.productList.data!.data.products.results[index].slug
                                       builder: (context) => ProductDetails(productSlug: productViewViewModel.productListItems[index].slug),
                                     )),
                               )),
@@ -131,7 +124,6 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   ),
                 );
             }
-            return Column();
           },
         ),
       ),

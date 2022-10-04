@@ -6,9 +6,11 @@ import '../Model/ProductListModel.dart';
 class ProductViewViewModel with ChangeNotifier {
 
   int _currentPageOffset = 0;
+  bool _isProductFetchedSuccessful = false;
   List<Results> productListItems = [];
 
   int get currentPageOffset => _currentPageOffset;
+  bool get isProductFetchedSuccessful => _isProductFetchedSuccessful;
 
   void increasePageOffset (){
     _currentPageOffset++;
@@ -25,12 +27,14 @@ class ProductViewViewModel with ChangeNotifier {
   }
 
   Future<void> fetchProductListApi (_currentPageOffset)async{
-    setProductList(ApiResponse.loading());
     _myRepo.fetchProductList(_currentPageOffset).then((value){
       setProductList(ApiResponse.completed(value));
       productListItems.addAll(value.data.products.results);
+      _isProductFetchedSuccessful = true;
       notifyListeners();
     }).onError((error, stackTrace){
+      _isProductFetchedSuccessful = false;
+      notifyListeners();
       setProductList(ApiResponse.error(error.toString()));
     });
   }
