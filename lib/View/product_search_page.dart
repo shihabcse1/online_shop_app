@@ -1,7 +1,7 @@
 import 'dart:core';
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:online_shop_app/Model/ProductListModel.dart';
 import 'package:online_shop_app/Resources/colors.dart';
 import 'package:online_shop_app/View/product_details.dart';
 import 'package:online_shop_app/ViewModel/product_search_view_model.dart';
@@ -20,12 +20,16 @@ class ProductSearchPage extends StatefulWidget {
 
 class _ProductSearchPageState extends State<ProductSearchPage> {
 
+  late List<Results> products;
+  String query = '';
+
   ProductViewViewModel  productViewViewModel = ProductViewViewModel();
   final RefreshController refreshController = RefreshController(initialRefresh: true);
 
   @override
   void initState() {
     productViewViewModel.fetchProductListApi(productViewViewModel.currentPageOffset);
+    products = productViewViewModel.productListItems;
     super.initState();
   }
 
@@ -68,19 +72,9 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Column(
                     children: [
-                      TextField(
-                        decoration: InputDecoration(
-                          fillColor: AppColors.whiteColor,
-                          filled: true,
-                          contentPadding:
-                          const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-                          hintText: "কাঙ্ক্ষিত পণ্যটি খুঁজুন",
-                          suffixIcon: const Icon(Icons.search_outlined),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
+                      SearchProductInputFieldWidget(
+                        text: query,
+                        hintText: "কাঙ্ক্ষিত পণ্যটি খুঁজুন", onChanged: (String value) {  },
                       ),
                       Expanded(
                         child: SmartRefresher(
@@ -131,6 +125,41 @@ class _ProductSearchPageState extends State<ProductSearchPage> {
                 );
             }
           },
+        ),
+      ),
+    );
+  }
+}
+
+class SearchProductInputFieldWidget extends StatelessWidget {
+
+  final String text;
+  final ValueChanged<String> onChanged;
+  final String hintText;
+
+  SearchProductInputFieldWidget({
+    Key? key,
+    required this.text,
+    required this.onChanged,
+    required this.hintText,
+  }) : super(key: key);
+
+  final controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        fillColor: AppColors.whiteColor,
+        filled: true,
+        contentPadding:
+        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+        hintText: hintText,
+        suffixIcon: const Icon(Icons.search_outlined),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15.0),
+          borderSide: BorderSide.none,
         ),
       ),
     );

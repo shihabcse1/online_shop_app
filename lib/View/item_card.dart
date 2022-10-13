@@ -128,10 +128,10 @@ class ItemCard extends StatelessWidget {
                   builder: (context, value, child){
                     return GestureDetector(
                       onTap: (){
-                        value.addPlusIconClickValue(index);
+                        value.addPlusIconClickValue(product.id.toInt());
                         value.addProductToCart();
                       },
-                      child: (!value.selectedValue.contains(index)) ? Container(
+                      child: (!value.selectedProductForAddToCard.contains(product.id.toInt())) ? Container(
                         alignment: Alignment.center,
                         height: 40,
                         width: 40,

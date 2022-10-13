@@ -29,8 +29,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
 
-    //final deviceHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -54,20 +52,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Column(
                       children: [
-                        TextField(
-                          decoration: InputDecoration(
-                            fillColor: AppColors.whiteColor,
-                            filled: true,
-                            contentPadding:
-                            const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-                            hintText: "কাঙ্ক্ষিত পণ্যটি খুঁজুন",
-                            suffixIcon: const Icon(Icons.search_outlined),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Container(

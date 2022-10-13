@@ -1,16 +1,15 @@
-# online_shop_app
+## Online Shop App
 
-A new Flutter project.
+An simple app with a REST API.
+The whole app is developed using Kotlin in MVVM architecture.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Fetch products by using REST API
+* Pagination REST API with Grid View(For Infinite Products)
+* Add Product into Card 
+* Show Product details
 
-A few resources to get you started if this is your first Flutter project:
+### MVVM Architecture Implementation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
