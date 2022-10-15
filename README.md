@@ -37,7 +37,7 @@ The whole app is developed using Kotlin in MVVM architecture.
 
 ## App Screenshots
 
-<img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/1.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/2.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/3.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/4.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/5.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/6.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/7.png" height="400" width="200"> <img src="https://github.com/SaadAAkash/MovieMashup/blob/master/Resources/Screenshots/8.png" height="400" width="200">
+<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="400" width="800">
 
 
 
