@@ -3,6 +3,10 @@
 An simple app by using REST API. It will not load all the products at the beginning. It will just load next page after scrolling. 
 The whole app is developed using Kotlin in MVVM architecture.
 
+## App Screenshots
+
+<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="500" width="800">
+
 ## Features
 
 * Fetch products infinite number of products by using REST API
@@ -35,9 +39,6 @@ The whole app is developed using Kotlin in MVVM architecture.
 * dotted_line
 * badges
 
-## App Screenshots
-
-<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="400" width="800">
 
 
 
