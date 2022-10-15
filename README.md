@@ -5,11 +5,11 @@ The whole app is developed using Kotlin in MVVM architecture.
 
 ## App Screenshots
 
-<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="500" width="800">
+<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="480" width="800">
 
 ## Features
 
-* Fetch products infinite number of products by using REST API
+* Fetch products by using REST API
 * Pagination REST API with Grid View(For Infinite Products)
 * Add Product into Card 
 * Show Product details through REST API
@@ -27,9 +27,7 @@ The whole app is developed using Kotlin in MVVM architecture.
 * Easy & Quick ways:
     * A Simple Gridview With reusable widgets
     * Expandable item layout if possible
-
-## Development Resources Used
-
+    
 ### Package Used
 
 * provider
