@@ -1,7 +1,7 @@
 ## Online Shop App
 
 A simple app using REST API. It will not load all the products at the beginning. It will load next page after scrolling. 
-The whole app is developed using Kotlin in MVVM architecture.
+The whole app is developed using Flutter in MVVM architecture.
 
 ## [Watch it on YouTube](https://youtu.be/pDYPKWsVLJM)
 
