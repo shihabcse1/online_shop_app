@@ -3,12 +3,6 @@
 A simple app using REST API. It will not load all the products at the beginning. It will load next page after scrolling. 
 The whole app is developed using Flutter in MVVM architecture.
 
-## [Watch it on YouTube](https://youtu.be/pDYPKWsVLJM)
-
-## App Screenshots
-
-<img src="https://github.com/shihabcse1/online_shop_app/blob/main/images/screenshot.png" height="480" width="800">
-
 ## Features
 
 * Fetch products by using REST API
